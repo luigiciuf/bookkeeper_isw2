@@ -79,9 +79,9 @@
       <artifactId>netty-handler</artifactId>
     </dependency>
     <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-transport-native-epoll</artifactId>
-        <classifier>linux-x86_64</classifier>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <classifier>linux-x86_64</classifier>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -179,28 +179,28 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.apache.kerby</groupId>
-        <artifactId>kerby-config</artifactId>
-        <version>${kerby.version}</version>
-        <scope>test</scope>
-        <exclusions>
-            <exclusion>
-                <groupId>org.slf4j</groupId>
-                <artifactId>*</artifactId>
-            </exclusion>
-        </exclusions>
+      <groupId>org.apache.kerby</groupId>
+      <artifactId>kerby-config</artifactId>
+      <version>${kerby.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-        <groupId>org.apache.kerby</groupId>
-        <artifactId>kerb-simplekdc</artifactId>
-        <version>${kerby.version}</version>
-        <scope>test</scope>
-        <exclusions>
-            <exclusion>
-                <groupId>org.slf4j</groupId>
-                <artifactId>*</artifactId>
-            </exclusion>
-        </exclusions>
+      <groupId>org.apache.kerby</groupId>
+      <artifactId>kerb-simplekdc</artifactId>
+      <version>${kerby.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
@@ -209,10 +209,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-       <!-- needed by ZooKeeper server tests utilities -->
-       <groupId>org.junit.jupiter</groupId>
-       <artifactId>junit-jupiter-api</artifactId>
-       <scope>test</scope>
+      <!-- needed by ZooKeeper server tests utilities -->
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.bookkeeper.stats</groupId>
@@ -232,12 +232,6 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
-    <!--pitest-->
-    <dependency>
-      <groupId>org.pitest</groupId>
-      <artifactId>pitest-maven</artifactId>
-      <version>1.16.1</version>
-    </dependency>
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
@@ -246,6 +240,7 @@
   </dependencies>
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -256,19 +251,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <version>1.16.1</version>
-        <configuration>
-          <targetClasses>
-            <param>org.apache.bookkeeper.Prova</param>
-          </targetClasses>
-          <targetTests>
-            <param>org.apache.bookkeeper.ProvaTest</param>
-          </targetTests>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -395,44 +377,97 @@
         </plugins>
       </build>
     </profile>
-    <!-- Jacoco profile -->
+
+
+    <!-- Badua profile -->
     <profile>
-      <id>jacoco</id>
+      <id>badua</id>
+
+      <dependencies>
+        <dependency>
+          <groupId>br.usp.each.saeg</groupId>
+          <artifactId>ba-dua-cli</artifactId>
+          <version>0.8.0</version>
+        </dependency>
+        <dependency>
+          <groupId>br.usp.each.saeg</groupId>
+          <artifactId>ba-dua-agent-rt</artifactId>
+          <version>0.8.0</version>
+        </dependency>
+      </dependencies>
 
       <build>
         <plugins>
+          <!-- Copy agent from dependency -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.10</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>br.usp.each.saeg</groupId>
+                      <artifactId>ba-dua-agent-rt</artifactId>
+                      <classifier>all</classifier>
+                      <version>0.8.0</version>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <!-- Execute tests -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M5</version>
             <configuration>
-              <!-- custom -->
-              <argLine>@{argLine}</argLine>
+              <argLine>@{argline}</argLine>
+              <argLine>
+                -javaagent:badua/ba-dua-agent-rt-0.8.0-all.jar
+                -Doutput.file=target/coverage.ser
+              </argLine>
             </configuration>
           </plugin>
-          <!-- Produce Jacoco report -->
+          <!-- Produce and prettify badua report -->
           <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
             <executions>
+              <!-- Produce Badua report -->
               <execution>
                 <goals>
-                  <goal>prepare-agent</goal>
+                  <goal>java</goal>
                 </goals>
-              </execution>
-              <!-- attached to Maven test phase -->
-              <execution>
-                <id>report</id>
                 <phase>test</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
+                <configuration>
+                  <mainClass>br.usp.each.saeg.badua.cli.Report</mainClass>
+                  <arguments>
+                    <argument>-input</argument>
+                    <argument>${project.build.directory}/coverage.ser</argument>
+                    <argument>-classes</argument>
+                    <argument>target/classes/org/apache/bookkeeper/my</argument>
+                    <argument>-show-classes</argument>
+                    <argument>-show-methods</argument>
+                    <argument>-xml</argument>
+                    <argument>${project.build.directory}/badua.xml</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>
         </plugins>
       </build>
     </profile>
+
+
+
+
   </profiles>
 </project>

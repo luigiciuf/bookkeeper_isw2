@@ -1,6 +1,6 @@
-package org.apache.bookkeeper;
+package org.apache.bookkeeper.my;
 
-import org.apache.bookkeeper.Prova;
+import org.apache.bookkeeper.my.Prova;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

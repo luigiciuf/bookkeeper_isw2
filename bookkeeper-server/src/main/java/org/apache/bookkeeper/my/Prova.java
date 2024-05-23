@@ -1,4 +1,4 @@
-package org.apache.bookkeeper;
+package org.apache.bookkeeper.my;
 
 //Simple calculator to perform basic mathematical operations
 public class Prova {
