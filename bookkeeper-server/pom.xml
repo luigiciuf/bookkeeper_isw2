@@ -468,7 +468,6 @@
     <!-- Jacoco profile -->
     <profile>
       <id>jacoco</id>
-
       <build>
         <plugins>
           <!-- Execute tests -->
