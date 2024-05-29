@@ -23,5 +23,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: jacoco-code-coverage/target/site/jacoco-aggregate
+          path:  bookkeeper-server/target/site/jacoco
           if-no-files-found: error
