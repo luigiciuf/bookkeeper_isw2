@@ -23,8 +23,10 @@ jobs:
           cd ba-dua
           git checkout tags/ba-dua-0.8.0 -b ba-dua-0.8.0
           mvn clean install
+        working-directory: ${{ github.workspace }}
       - name: Build
         run: mvn clean verify -P badua
+        working-directory: ${{ github.workspace }}
       - name: Upload report
         uses: actions/upload-artifact@v3
         with:
