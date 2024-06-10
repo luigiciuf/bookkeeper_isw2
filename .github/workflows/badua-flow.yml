@@ -25,13 +25,8 @@ jobs:
           mvn install:install-file -Dfile="bookkeeper-server/badua/ba-dua-cli-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-cli -Dversion="0.6.0" -Dpackaging=jar
         working-directory: ${{ github.workspace }}
 
-      - name: Build dependencies
-        run: |
-          mvn clean install -pl common,common-allocator,proto,slogger-slf4j,slogger-api,tools-framework,native-io,testtools,http-server,circe-checksum,stats/prometheus-metrics-provider,stats/otel-metrics-provider -am
-        working-directory: ${{ github.workspace }}/bookkeeper-server
-
       - name: Build project with Ba-dua
-        run: mvn clean install -P badua test
+        run: mvn clean install -P badua
         working-directory: ${{ github.workspace }}/bookkeeper-server
 
       - name: Upload Ba-dua report
