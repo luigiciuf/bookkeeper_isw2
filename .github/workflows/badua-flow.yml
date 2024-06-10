@@ -21,7 +21,7 @@ jobs:
         run: |
           git clone https://www.github.com/saeg/ba-dua.git
           cd ba-dua
-          git checkout tags/ba-dua-0.6.0 -b ba-dua-0.6.0
+          git checkout badua/ba-dua-0.6.0 -b ba-dua-0.6.0
           mvn clean install
         working-directory: ${{ github.workspace }}
       - name: Build
