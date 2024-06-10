@@ -12,22 +12,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up JDK 1.8
         uses: actions/setup-java@v3
         with:
           java-version: 8
           distribution: 'temurin'
-      - name: Clone and build ba-dua  # to get the CLI
+
+      - name: Install Ba-dua JAR files
         run: |
-          git clone https://www.github.com/saeg/ba-dua.git
-          cd ba-dua
-          git checkout badua/ba-dua-0.6.0 -b ba-dua-0.6.0
-          mvn clean install
+          mvn install:install-file -Dfile="badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-agent-rt -Dversion="0.6.0" -Dpackaging=jar
+          mvn install:install-file -Dfile="badua/ba-dua-cli-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-cli -Dversion="0.6.0" -Dpackaging=jar
         working-directory: ${{ github.workspace }}
-      - name: Build
-        run: mvn -P badua test
-        working-directory: ${{ github.workspace }}
-      - name: Upload report
+
+      - name: Build project with Ba-dua
+        run: mvn clean verify -P badua
+        working-directory: ${{ github.workspace }}/bookkeeper-server
+
+      - name: Upload Ba-dua report
         uses: actions/upload-artifact@v3
         with:
           name: badua-report
