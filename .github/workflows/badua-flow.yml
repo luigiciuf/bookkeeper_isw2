@@ -26,7 +26,7 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       - name: Build project with Ba-dua
-        run: mvn clean -P badua test
+        run: mvn clean install -P badua test
         working-directory: ${{ github.workspace }}/bookkeeper-server
 
       - name: Upload Ba-dua report
