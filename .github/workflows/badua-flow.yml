@@ -21,8 +21,8 @@ jobs:
 
       - name: Install Ba-dua JAR files
         run: |
-          mvn install:install-file -Dfile="bookkeeper_isw2/badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId="ba-dua-agent-rt" -Dversion="0.6.0" -Dpackaging=jar
-          mvn install:install-file -DgroupId="br.usp.each.saeg" -DartifactId="ba-dua-cli" -Dversion="0.6.0" -Dpackaging=jar
+          mvn install:install-file -Dfile="badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId="ba-dua-agent-rt" -Dversion="0.6.0" -Dpackaging=jar
+          mvn install:install-file Dfile="badua/ba-dua-cli-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId="ba-dua-cli" -Dversion="0.6.0" -Dpackaging=jar
 
       - name: Build project with Ba-dua
         run: mvn clean verify  -P badua
