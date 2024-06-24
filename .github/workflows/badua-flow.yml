@@ -30,7 +30,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Verify Bookkeeper
-        run: mvn -B verify -P ba-dua-coverage
+        run: mvn -B verify -P badua
 
       - name: Upload ba-dua report
         uses: actions/upload-artifact@v3
