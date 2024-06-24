@@ -29,10 +29,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Install ba-dua-agent-rt
-        run: mvn install:install-file -Dfile="badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-agent-rt -Dversion="0.6.0" -Dpackaging=jar
+        run: mvn install:install-file -Dfile="bookkeeper-server/badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-agent-rt -Dversion="0.6.0" -Dpackaging=jar
 
       - name: Install ba-dua-cli
-        run: mvn install:install-file -DgroupId='br.usp.each.saeg' -DartifactId='ba-dua-cli' -Dversion='0.6.0' -Dclassifier=all -Dpackaging=jar -Dfile="badua/ba-dua-cli-0.6.0-all.jar"
+        run: mvn install:install-file -DgroupId='br.usp.each.saeg' -DartifactId='ba-dua-cli' -Dversion='0.6.0' -Dclassifier=all -Dpackaging=jar -Dfile="bookkeeper-server/badua/ba-dua-cli-0.6.0-all.jar"
 
       - name: Install dependencies
         run: mvn install -DskipTests
