@@ -38,7 +38,7 @@ jobs:
         run: mvn install -DskipTests
 
       - name: Verify Bookkeeper
-        run: mvn -B verify -P badua
+        run: mvn -P badua test
 
       - name: Upload ba-dua report
         uses: actions/upload-artifact@v3
