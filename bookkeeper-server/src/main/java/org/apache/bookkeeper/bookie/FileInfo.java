@@ -411,7 +411,7 @@ class FileInfo extends Watchable<LastAddConfirmedUpdateNotification> {
      * @return number of bytes read
      * @throws IOException
      */
-    private int readAbsolute(ByteBuffer bb, long start, boolean bestEffort)
+     int readAbsolute(ByteBuffer bb, long start, boolean bestEffort)
             throws IOException {
         checkOpen(false);
         synchronized (this) {
