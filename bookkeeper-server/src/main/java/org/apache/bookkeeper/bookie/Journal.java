@@ -104,27 +104,40 @@ public class Journal implements CheckpointSource {
      * @return list of filtered ids
      */
     public static List<Long> listJournalIds(File journalDir, JournalIdFilter filter) {
+        // ottiene un array di file dalla diretory JournalDir
         File[] logFiles = journalDir.listFiles();
+        // se la directory è vuota o non esiste restituisce una lista vuota
         if (logFiles == null || logFiles.length == 0) {
             return Collections.emptyList();
         }
+        // crea una nuova lista per contenere gli identificatori dei log
         List<Long> logs = new ArrayList<Long>();
+        // scorre ogni file nella directory
         for (File f: logFiles) {
+            // si prende il nome del file
             String name = f.getName();
+            // se il nome del file non termina con .txn passa al successivo
             if (!name.endsWith(".txn")) {
                 continue;
             }
+            // si prende la parte del nome del file che si trova prima del punto ovvero prima dell'estensione
             String idString = name.split("\\.")[0];
+            //converte la stringa in un numeor loing usando la base esadecimale
             long id = Long.parseLong(idString, 16);
+            // controlla se è srato fornito un filtro
             if (filter != null) {
+                // se il filtro accetta l'id, lo aggiunge alla lista logs
                 if (filter.accept(id)) {
                     logs.add(id);
                 }
             } else {
+                // se non viene fornito nessun filtro, aggiunge direttamente l'identifcatore alla lista
                 logs.add(id);
             }
         }
+        //ordinamento della lista logs in ordine crescente
         Collections.sort(logs);
+        //restituisce la lista ordinata degli identificatori di log
         return logs;
     }
 
