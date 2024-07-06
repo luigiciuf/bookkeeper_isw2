@@ -1,47 +1,43 @@
-name: badua_coverage
-
+name: Badua-Coverage
 on:
   push:
-    branches: ["ISW2"]
+    branches:
+      - master
   pull_request:
-    branches: [ "ISW2" ]
-
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Set up JDK 8
-        uses: actions/setup-java@v3
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v4
         with:
-          java-version: '8'
-          distribution: 'temurin'
-
+          java-version: 8.0.372
+          distribution: 'temurin' # Alternative distribution options are available.
       - name: Cache Maven packages
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Install ba-dua-agent-rt
-        run: mvn install:install-file -Dfile="bookkeeper-server/badua/ba-dua-agent-rt-0.6.0-all.jar" -DgroupId="br.usp.each.saeg" -DartifactId=ba-dua-agent-rt -Dversion="0.6.0" -Dpackaging=jar
-
-      - name: Install ba-dua-cli
-        run: mvn install:install-file -DgroupId='br.usp.each.saeg' -DartifactId='ba-dua-cli' -Dversion='0.6.0' -Dclassifier=all -Dpackaging=jar -Dfile="bookkeeper-server/badua/ba-dua-cli-0.6.0-all.jar"
-
-      - name: Install dependencies
-        run: mvn install -DskipTests
-
-      - name: Verify Bookkeeper
-        run: mvn test -P badua
-
-      - name: Upload ba-dua report
+      - name: Clone and build ba-dua repository
+        run: |
+          git clone https://github.com/saeg/ba-dua
+          cd ba-dua
+          git checkout d2401f0
+          mvn clean install
+          cd ..
+      - name: Build and analyze bookkeeper project
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        run: mvn clean verify -P badua
+      - name: Upload report
         uses: actions/upload-artifact@v3
         with:
-          name: badua.xml
+          name: BaDuaCoverage_Report
           path: bookkeeper-server/target/badua.xml
+          if-no-files-found: error
