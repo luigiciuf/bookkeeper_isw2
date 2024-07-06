@@ -1,43 +1,39 @@
-name: Badua-Coverage
+name: Apache Bookkeeper CI/CD (Data flow coverage)
+
 on:
   push:
-    branches:
-      - "ISW2"
+    branches: [ "ISW2" ]
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ "ISW2" ]
+
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v4
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
         with:
-          java-version: 8.0.372
-          distribution: 'temurin' # Alternative distribution options are available.
+          java-version: '8'
+          distribution: 'temurin'
+
       - name: Cache Maven packages
-        uses: actions/cache@v4
+        uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Clone and build ba-dua repository
-        run: |
-          git clone https://github.com/saeg/ba-dua
-          cd ba-dua
-          git checkout d2401f0
-          mvn clean install
-          cd ..
-      - name: Build and analyze bookkeeper project
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        run: mvn clean verify -P badua
-      - name: Upload report
+
+      - name: Verify Bookkeeper
+        run: mvn -B verify -P badua
+
+      - name: Upload ba-dua report
         uses: actions/upload-artifact@v3
         with:
-          name: BaDuaCoverage_Report
+          name: badua.xml
           path: bookkeeper-server/target/badua.xml
-          if-no-files-found: error
