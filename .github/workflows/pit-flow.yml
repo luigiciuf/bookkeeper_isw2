@@ -32,10 +32,10 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: pit
-        run: mvn clean install -P pitest test
+        run: mvn clean -P pitest test
 
       - name: Upload PIT report
         uses: actions/upload-artifact@v3
         with:
           name: pit-reports
-          path: bookkeeper-server/target/pit-reports/
+          path: bookkeeper-server/target/pit-reports
