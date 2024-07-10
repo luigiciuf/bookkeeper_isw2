@@ -136,7 +136,7 @@ public class ReadCache implements Closeable {
         }
     }
 
-    public ByteBuf get(long ledgerId, long entryId) {
+        public ByteBuf get(long ledgerId, long entryId) {
         lock.readLock().lock();
 
         try {

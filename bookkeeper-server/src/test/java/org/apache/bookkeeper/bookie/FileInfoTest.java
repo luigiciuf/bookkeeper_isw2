@@ -1,25 +1,15 @@
 package org.apache.bookkeeper.bookie;
 
-import com.google.common.io.ByteSource;
-import org.apache.commons.lang3.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
@@ -114,9 +104,9 @@ public class FileInfoTest {
                 {ByteBuffer.allocate(5), 0, false, ShortReadException.class},
                 {ByteBuffer.allocate(5), 1, true, 5},
 
-                // {ByteBuffer.wrap("data+1".getBytes()), -1, true, IllegalArgumentException.class},
-                {ByteBuffer.wrap("data+1".getBytes()), 0, false, ShortReadException.class},
-                // {ByteBuffer.wrap("data+1".getBytes()), 1, true,6},
+                // {ByteBuffer.allocateDirect(Integer.MAX_VALUE), -1, true, IllegalArgumentException.class},
+                {ByteBuffer.allocateDirect(Integer.MAX_VALUE), 0, false, ShortReadException.class},
+                // {ByteBuffer.allocateDirect(Integer.MAX_VALUE), 1, true,6},
 
 
                 {ByteBuffer.allocate(5), 0, true, 5}, // Simulate read less than buffer size, bestEffort = true
