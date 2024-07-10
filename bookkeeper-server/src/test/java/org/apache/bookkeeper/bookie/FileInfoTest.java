@@ -104,9 +104,9 @@ public class FileInfoTest {
                 {ByteBuffer.allocate(5), 0, false, ShortReadException.class},
                 {ByteBuffer.allocate(5), 1, true, 5},
 
-                // {ByteBuffer.allocateDirect(Integer.MAX_VALUE), -1, true, IllegalArgumentException.class},
-                {ByteBuffer.allocateDirect(Integer.MAX_VALUE), 0, false, ShortReadException.class},
-                // {ByteBuffer.allocateDirect(Integer.MAX_VALUE), 1, true,6},
+                // {ByteBuffer.wrap("data+1".getBytes()), -1, true, IllegalArgumentException.class},
+                {ByteBuffer.wrap("data+1".getBytes()), 0, false, ShortReadException.class},
+                // {ByteBuffer.wrap("data+1".getBytes()), 1, true,6},
 
 
                 {ByteBuffer.allocate(5), 0, true, 5}, // Simulate read less than buffer size, bestEffort = true
