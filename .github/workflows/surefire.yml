@@ -4,9 +4,9 @@ name: surefire
 
 on:
   push:
-    branches: [ "isw2" ]
+    branches: [ "ISW2" ]
   pull_request:
-    branches: [ "isw2" ]
+    branches: [ "ISW2" ]
 
 jobs:
   build:
