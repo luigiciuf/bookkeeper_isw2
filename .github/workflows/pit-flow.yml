@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: pit
-        run: mvn clean -P pitest test
+        run: mvn clean -P pitest test -e -X
 
       - name: Upload PIT report
         uses: actions/upload-artifact@v3
