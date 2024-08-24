@@ -47,17 +47,21 @@ public class FileInfoTest {
     public static Collection<Object[]> data(){
         return Arrays.asList(new Object[][]{
                 {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 1, 0},
-                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 2, 0, 1, 0},           // dovrebbe dare exception.class
-                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 0, 0, 1, 0},           // dovrebbe dare exception.class
-                {Exception.class, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[0], -1, 0, 0, 0},                     // dovrebbe essere  null
+                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 2, 0, 1, 0},// dovrebbe dare exception.class
+                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 0, 0, 1, 0},// dovrebbe dare exception.class
+                {Exception.class, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[0], -1, 0, 0, 0},// dovrebbe essere  null
                 {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[0], 0, 0, 0, 0},
-                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[0], 1, 1, 0, 0},               // dovrebbe dare exception.class
+                {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[0], 1, 1, 0, 0},// dovrebbe dare exception.class
                 {Exception.class, ByteBuffer.wrap("BKLU".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 1, 0},
 
-                //jacoco coverage
+                //Jacoco coverage
                 {null, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 1, 16},
                 {Exception.class, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 1, 10},
                 {Exception.class, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 1, -1},
+
+                //Badua coverage
+                {Exception.class, ByteBuffer.wrap("BKLE".getBytes(UTF_8)).getInt(), new byte[1], 1, 0, 2, -1},
+
 
         });
     }
